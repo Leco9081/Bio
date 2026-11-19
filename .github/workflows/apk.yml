@@ -45,10 +45,14 @@ jobs:
 
       - name: Separar e garantir assinatura/alinhamento do APK
         run: |
-          APK=$(find proj/target -name "*.apk" | head -n 1)
+          APK="proj/target/android-artifacts/release/apk/bio.apk"
+          if [ ! -f "$APK" ]; then
+            APK=$(sudo find proj/target -path "*/apk/*.apk" | head -n 1)
+          fi
           echo "APK encontrado: $APK"
           test -n "$APK"
-          cp "$APK" Bio.apk
+          sudo cp "$APK" Bio.apk
+          sudo chmod 644 Bio.apk
 
           ZIPALIGN=$(find /usr -name "zipalign" 2>/dev/null | head -n 1 || true)
           APKSIGNER=$(find /usr -name "apksigner" 2>/dev/null | head -n 1 || true)
@@ -66,6 +70,8 @@ jobs:
               --out Bio-signed.apk Bio.apk
             mv Bio-signed.apk Bio.apk
           fi
+
+          ls -lh Bio.apk
 
       - name: Guardar como artefato
         uses: actions/upload-artifact@v4
