@@ -50,11 +50,11 @@ jobs:
           test -n "$APK"
           cp "$APK" Bio.apk
 
-          BUILD_TOOLS=$(find /usr -name "zipalign" 2>/dev/null | head -n 1 | xargs dirname 2>/dev/null || true)
+          ZIPALIGN=$(find /usr -name "zipalign" 2>/dev/null | head -n 1 || true)
           APKSIGNER=$(find /usr -name "apksigner" 2>/dev/null | head -n 1 || true)
 
-          if [ -n "$BUILD_TOOLS" ] && [ -x "$BUILD_TOOLS/zipalign" ]; then
-            "$BUILD_TOOLS/zipalign" -f -p 4 Bio.apk Bio-aligned.apk
+          if [ -n "$ZIPALIGN" ] && [ -x "$ZIPALIGN" ]; then
+            "$ZIPALIGN" -f -p 4 Bio.apk Bio-aligned.apk
             mv Bio-aligned.apk Bio.apk
           fi
 
@@ -79,4 +79,3 @@ jobs:
           tag_name: apk-${{ github.run_number }}
           name: Bio APK ${{ github.run_number }}
           files: Bio.apk
-          
