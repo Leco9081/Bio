@@ -1,0 +1,42 @@
+[package]
+name = "bio"
+version = "1.5.0"
+edition = "2021"
+
+[dependencies]
+# Sem a feature de audio: nao precisa de bibliotecas extras (Linux/Android).
+macroquad = { version = "0.4", default-features = false }
+
+# Build de desenvolvimento (tambem e usado como plano B no APK): rapido de rodar
+[profile.dev]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+
+[profile.dev.package."*"]
+opt-level = 3
+
+# Build final: pequeno e rapido
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+# ---------------------------------------------------------------------
+# ANDROID (cargo-quad-apk). Um unico APK com as 2 arquiteturas de celular:
+#   armv7  = celulares de 32 bits (antigos / baratos)
+#   aarch64 = celulares de 64 bits (praticamente todos os atuais)
+# ---------------------------------------------------------------------
+[package.metadata.android]
+package_name = "com.bio.game"
+label = "Bio"
+version_code = 15
+version_name = "1.5"
+fullscreen = true
+orientation = "landscape"
+opengles_version_major = 2
+opengles_version_minor = 0
+build_targets = ["armv7-linux-androideabi", "aarch64-linux-android"]

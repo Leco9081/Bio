@@ -1,0 +1,105 @@
+BIO 1.5 - TUTORIAL (gerar o bio.exe e rodar no celular com Winlator)
+=====================================================================
+
+O QUE TEM NESTE ZIP
+-------------------
+Cargo.toml, src\main.rs ........ o jogo (codigo em Rust). Layout normal, para PC.
+build_windows.bat .............. compila no PC e monta a pasta Bio_Windows.
+.github\workflows\windows.yml .. compila na nuvem (GitHub) - layout normal.
+github_celular\ ................ os mesmos 3 arquivos "achatados" (sem pastas),
+                                 para subir no GitHub PELO CELULAR.
+TUTORIAL.txt ................... este arquivo.
+
+IMPORTANTE: o codigo novo (modo celular, tecla H, caminhos relativos) foi
+escrito e conferido por leitura, mas NAO foi compilado nem executado pelo
+Claude (o ambiente dele nao tem Rust). Se der erro ao compilar, copie o texto
+do erro e mande para o Claude: ele corrige.
+
+
+ESCOLHA UM CAMINHO PARA GERAR O bio.exe
+=======================================
+
+CAMINHO A - TENHO UM PC COM WINDOWS (o jeito mais simples)
+----------------------------------------------------------
+1) Extraia este zip numa pasta (ex.: C:\bio).
+2) Instale o Rust: https://rustup.rs  (baixe o rustup-init.exe e aceite o
+   padrao). Se pedir as "Build Tools do Visual Studio", instale a opcao
+   "Desenvolvimento para desktop com C++". Pode precisar reiniciar o PC.
+3) Dentro da pasta, de dois cliques em  build_windows.bat
+   (demora alguns minutos na primeira vez).
+4) No final aparece a pasta  Bio_Windows  com bio.exe, a pasta skins e este
+   tutorial.
+5) Compacte a pasta Bio_Windows em .zip e leve para o celular.
+
+   Se preferir digitar: abra o Prompt de Comando na pasta e rode
+       cargo build --release
+   O arquivo sai em  target\release\bio.exe
+
+CAMINHO B - SO TENHO O CELULAR (GitHub compila na nuvem, de graca)
+------------------------------------------------------------------
+Use os 3 arquivos da pasta github_celular (Cargo.toml, main.rs, windows.yml).
+Se estiver no PC, voce tambem pode arrastar o projeto inteiro para o GitHub.
+
+1) No navegador do celular, entre em github.com e crie uma conta.
+2) Crie um repositorio novo (pode ser privado), nome: bio
+3) No repositorio: Add file > Upload files. Envie Cargo.toml e main.rs.
+   Confirme em "Commit changes".
+   (Se a opcao de enviar nao aparecer, ative "Site para computador" no menu
+   do navegador.)
+4) Add file > Create new file. No campo do nome, digite exatamente:
+       .github/workflows/windows.yml
+   (com as barras: o GitHub cria as pastas sozinho).
+5) Abra o windows.yml deste zip, copie TODO o texto, cole na caixa grande e
+   confirme em "Commit changes". Isso ja inicia a compilacao sozinho.
+6) Aba "Actions" > toque na execucao "Bio Windows". Espere ficar verde
+   (5 a 10 minutos). Se ficar vermelha: abra a etapa "Compilar", tire print
+   ou copie o erro e mande para o Claude.
+7) Role ate o fim da pagina, em "Artifacts", e baixe  Bio_Windows.
+   Dentro vem o bio.exe. Extraia o zip.
+
+
+RODAR NO CELULAR COM O WINLATOR
+===============================
+1) Baixe o Winlator v11 ou mais novo (GitHub: brunodev85/winlator, aba
+   Releases) e instale o APK.
+2) Abra o app e crie um container com as opcoes padrao.
+3) Copie a pasta Bio_Windows para DENTRO do disco C: do container. (Assim o
+   jogo consegue gravar bio_config.txt e as skins. Em pasta somente leitura
+   ele nao salva.)
+4) Inicie o container e abra o bio.exe.
+   Os nomes dos menus mudam um pouco entre versoes do Winlator: se algo for
+   diferente, o Gemini/Claude pode adaptar o passo olhando o print.
+
+
+MODO CELULAR (TESTE)
+====================
+Liga: Esc > Configuracoes > "Modo celular (teste)": Sim   (padrao: Nao)
+
+Se voce nao consegue apertar Esc no emulador, crie um arquivo de texto
+chamado  bio_config.txt  NA MESMA PASTA do bio.exe com UMA linha:
+       mobile_mode=1
+(cuidado para o nome nao virar bio_config.txt.txt).
+
+Com o modo ligado:
+- Aparecem joystick, BATER, USAR, a hotbar e os botoes das teclas
+  (Esc, E, Q, F1, F3, F4, +, -, Shift e H). O icone de cada botao e a TECLA.
+- O mouse (ou o toque emulado) faz o papel do dedo; o teclado continua valendo.
+- A MIRA e AUTOMATICA: o bloco alvo fica na direcao em que voce anda.
+  Clicar e segurar no mundo vira a mira para aquele lado.
+- Inventario/bancada: clique = botao esquerdo, segurar = botao direito.
+
+Tecla H (ou botao ?) = mostra/esconde a LISTA DE CONTROLES.
+Com o modo desligado, tudo funciona como antes (mouse mira, WASD anda).
+
+
+SE DER PROBLEMA
+===============
+- Tela preta ou fecha sozinho: troque o driver grafico do container no
+  Winlator. Se continuar, tente o Winlator CMOD.
+- Nao salva a config/skins: o jogo esta numa pasta somente leitura; mova a
+  pasta Bio_Windows para o C: do container.
+- Joystick nao responde ao arrastar: o emulador pode nao "segurar" o clique.
+  O WASD continua funcionando; avise o Claude para ajustar.
+- Erro ao compilar: copie o texto do erro e mande para o Claude.
+- O bio.exe pede alguma DLL: me avise o nome da DLL (o projeto ja compila com
+  o runtime embutido para evitar isso).
