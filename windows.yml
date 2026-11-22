@@ -1,0 +1,26 @@
+name: Bio Windows
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      RUSTFLAGS: -C target-feature=+crt-static
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Compilar
+        run: cargo build --release
+      - name: Montar a pasta do jogo
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path Bio_Windows\skins | Out-Null
+          Copy-Item target\release\bio.exe Bio_Windows\bio.exe
+          Copy-Item TUTORIAL.txt Bio_Windows\TUTORIAL.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Bio_Windows
+          path: Bio_Windows
