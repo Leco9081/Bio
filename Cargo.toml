@@ -2,6 +2,7 @@
 name = "bio"
 version = "2.0.0"
 edition = "2021"
+description = "Bio V2 - Base Solida & Atmosfera"
 
 [dependencies]
 # Sem a feature de audio: nao precisa de bibliotecas extras (Linux/Android).
